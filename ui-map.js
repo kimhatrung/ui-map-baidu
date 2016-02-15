@@ -73,8 +73,8 @@
   app.value('uiMapConfig', {
     initDelay: 200
   })
-    .directive('uiMap', ['uiMapConfig', '$window', '$parse', '$timeout',
-      function (uiMapConfig, $window, $parse, $timeout) {
+    .directive('uiMap', ['uiMapConfig', '$window', '$parse', '$timeout', '$rootScope'
+      function (uiMapConfig, $window, $parse, $timeout, $rootScope) {
         var mapEvents = 'click dblclick rightclick rightdblclick maptypechange mousemove mouseover mouseout '
           + 'movestart moving moveend zoomstart zoomend addoverlay addcontrol removecontrol removeoverlay '
           + 'clearoverlays dragstart dragging dragend addtilelayer removetilelayer load resize hotspotclick '
@@ -147,9 +147,12 @@
                 }
                 /*********************** end add baidu Map plugins ****************/
               }
-              var model = $parse(attrs.uiMap);
+              //var model = $parse(attrs.uiMap);
               //Set scope variable for the map
-              model.assign(scope, map);
+              //model.assign(scope, map);
+
+              $rootScope.$broadcast('baiduMapInitialized', map);
+
               bindMapEvents(scope, mapEvents, map, elm, mapEventListeners);
 
               // set ui-map cache object
